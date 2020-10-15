@@ -1,3 +1,7 @@
+# Ignore assignments that should not be tracked in git
+assign4
+assign5
+
 # Prerequisites
 *.d
 
