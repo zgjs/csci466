@@ -11,73 +11,21 @@ if(isset($_GET["highlight"])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noimageindex, nofollow, nosnippet">
     <title>Assignment 5</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
-    <style>
-pre {
-    padding: 4px;
-}
-@media (prefers-color-scheme: light) {
-    pre {
-        color:#000000;
-        background:#ffffff;
-    }
-    pre span.keyword {
-        color:#800000;
-        font-weight:bold; 
-    }
-    pre span.punct {
-        color:#808030;
-    }
-    pre span.type {
-        color:#bb7977;
-    }
-    pre span.extra {
-        color:#074726;
-    }
-    pre span.number {
-        color:#008c00; 
-    }
-    pre span.string {
-        color:#0000e6;
-    }
-}
-@media (prefers-color-scheme: dark) {
-    pre {
-        color:#ddeeff;
-        background:#000000;
-    }
-    pre span.keyword {
-        color:#7090f0;
-        font-weight:bold; 
-    }
-    pre span.punct {
-        color:#9999bb; 
-    }
-    pre span.type {
-        color:#ffbbff;
-    }
-    pre span.extra {
-        color:#abab6a;
-    }
-    pre span.number {
-        color:#44bf44; 
-    }
-    pre span.string {
-        color:#54a4fa;
-    }
-}
-    </style>
+    <link rel="stylesheet" href="/~z1871157/csci466/sql.css">
 </head>
 <body>
-    <h1>Schema</h1>
+    <h1>Assignment 5</h1>
+    <h2>Schema</h2>
 <?php
 // Connect to default database z1871157
 include '/home/turing/z1871157/php.inc/db.inc.php';
 $connection = new mysqli($servername, $username, $password, $dbname);
 if ($connection->connect_error) die("<p class=error>Connection failed" . $connection_connect_error . "</p>");
 ?>
-    <h2>Dogs</h2>
+    <h3>Dogs</h3>
     <p>
 <pre><span class='keyword'>CREATE TABLE IF NOT EXIST</span> dogs <span class='punct'>(
    `</span>dog id<span class='punct'>`</span> <span class='type'>INT</span> <span class='extra'>AUTO_INCREMENT</span> <span class='keyword''>PRIMARY KEY</span><span class='punct'>,
@@ -120,7 +68,7 @@ TR;
     echo "There's no schema for dogs!";
 }
 ?>
-    </p><h2>Visits</h2>
+    </p><h3>Visits</h3>
     <p>
 <pre><span class='keyword'>CREATE TABLE IF NOT EXIST</span> dogs <span class='punct'>(
    `</span>visit id<span class='punct'>`</span> <span class='type'>INT</span> <span class='extra'>AUTO_INCREMENT</span> <span class='keyword''>PRIMARY KEY</span><span class='punct'>,
@@ -166,8 +114,8 @@ TR;
 }
 ?>
     </p>
-    <h1>Instance Data</h1>
-    <h2>Dogs</h2>
+    <h2>Instance Data</h2>
+    <h3>Dogs</h3>
     <p>
 <pre><span class='keyword'>SELECT</span> * <span class='keyword'>FROM</span> dogs<span class='punct'>;</span></pre>
     </p>
@@ -197,7 +145,7 @@ TR;
     echo "There aren't any dogs!";
 }
 ?>
-    <h2>Dog Visits</h2>
+    <h3>Dog Visits</h3>
     <p>
 <pre><span class='keyword'>SELECT</span> * <span class='keyword'>FROM</span> dogs<span class='punct'>;</span></pre>
     </p>
@@ -210,7 +158,7 @@ if($result->num_rows > 0) {
     echo <<<TH
     <table>
         <tr>
-            <th>visit id/th>
+            <th>visit id</th>
             <th>dog id</th>
             <th>date</th>
             <th>time</th>
@@ -231,8 +179,8 @@ TR;
     echo "There aren't any dog visits!";
 }
 ?>
-    <h1>Views</h1>
-    <h2>Dog Visits</h2>
+    <h2>Views</h2>
+    <h3>Dog Visits</h3>
     <p>
 <pre><span class='keyword'>CREATE VIEW</span> <span class='punct'>`</span>Dog Visits<span class='punct'>`,`</span>date<span class='punct'>`,`</span>time<span class='punct'>`</span> <span class='keyword'>AS</span>
 <span class='keyword'>SELECT</span> <span class='punct'>`</span>name<span class='punct'>`,`</span>date<span class='punct'>`,`</span>time<span class='punct'>`</span> <span class='keyword'>FROM</span> visits

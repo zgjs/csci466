@@ -1,0 +1,53 @@
+pre {
+    padding: 4px;
+}
+@media (prefers-color-scheme: light) {
+    pre {
+        color:#000000;
+        background:#ffffff;
+    }
+    pre span.keyword {
+        color:#800000;
+        font-weight:bold; 
+    }
+    pre span.punct {
+        color:#808030;
+    }
+    pre span.type {
+        color:#bb7977;
+    }
+    pre span.extra {
+        color:#074726;
+    }
+    pre span.number {
+        color:#008c00; 
+    }
+    pre span.string {
+        color:#0000e6;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    pre {
+        color:#ddeeff;
+        background:#000000;
+    }
+    pre span.keyword {
+        color:#7090f0;
+        font-weight:bold; 
+    }
+    pre span.punct {
+        color:#9999bb; 
+    }
+    pre span.type {
+        color:#ffbbff;
+    }
+    pre span.extra {
+        color:#abab6a;
+    }
+    pre span.number {
+        color:#44bf44; 
+    }
+    pre span.string {
+        color:#54a4fa;
+    }
+}
