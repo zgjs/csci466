@@ -1,6 +1,31 @@
 pre {
     padding: 4px;
 }
+table th.int,td.int {
+    text-align: right;
+    width: 6em;
+}
+table th.id,td.id {
+    text-align: right;
+    width: 2em;
+}
+table th.name,td.name {
+    width: 8em;
+}
+table th.phone,td.phone {
+    width: 8em;
+}
+table th.decimal,td.decimal{
+    text-align: right;
+    width: 6em;
+}
+table th.dollar,td.dollar{
+    text-align: right;
+    width: 4em;
+}
+table th.time,td.time{
+    width: 5em;
+}
 @media (prefers-color-scheme: light) {
     pre {
         color:#000000;
@@ -25,11 +50,20 @@ pre {
     pre span.string {
         color:#0000e6;
     }
+    pre span.format {
+        color:#007997;
+    }
+    pre span.comment {
+        color:#696969;
+    }
+    table th {
+        background: #dddddd;
+    }
 }
 @media (prefers-color-scheme: dark) {
     pre {
         color:#ddeeff;
-        background:#000000;
+        background: #001a22;
     }
     pre span.keyword {
         color:#7090f0;
@@ -48,6 +82,15 @@ pre {
         color:#44bf44; 
     }
     pre span.string {
-        color:#54a4fa;
+        color:#54bbfa;
+    }
+    pre span.format {
+        color:#44ccbb;
+    }
+    pre span.comment {
+        color:#69bb99;
+    }
+    table th {
+        background: #001a22;
     }
 }
