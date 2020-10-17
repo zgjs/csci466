@@ -71,15 +71,16 @@
 
 -- Clean database --
 \! echo "Dropping views and tables...";
-DROP VIEW IF EXISTS `Appointment Reminders`,
-                     Billing,
-		    `Client Appointments By Day`,
-		    `Client List`,
-		    `Client Preferences Matrix`,
-		    `Clients Scheduled Today`, 
-		    `Employee List`,
-		    `Employee Schedules By Day`,
-		    `Services List`;
+DROP VIEW IF EXISTS
+   `Appointment Reminders`,
+    Billing,
+   `Client Appointments By Day`,
+   `Client List`,
+   `Client Preferences Matrix`,
+   `Clients Scheduled Today`, 
+   `Employee List`,
+   `Employee Schedules By Day`,
+   `Services List`;
 DROP TABLE IF EXISTS Appointment,PreferredFor,Employee,Client,Person,Service;
 
 \! echo "";
