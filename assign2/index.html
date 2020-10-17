@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noimageindex, nofollow, nosnippet">
+    <title>Assignment 2 - Normalization</title>
+    <link rel="icon" type="image/ico" href="/~z1871157/csci466/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <style>
+span.relation {
+    font-family:Consolas, "Lucida Console", Monaco, monospace; 
+}
+span.question {
+    font-weight: bold;
+}
+div.fd {
+    font-size:small;
+}
+table.fd {
+    table-layout: auto;
+    max-width: 350px;
+}
+body {
+    max-width: 1180px !important;
+}
+</style>
+</head>
+<body>
+    <h1>Assignment 2 - Normalization</h1>
+    <ol>
+        <li>
+            <span class="relation"><b>Pharmacy</b>(patient_id, patient_name, address, (Rx_num, trademark_name, generic_name, (filldate, num_refills_left), num_refills))</span>
+            <div class=fd>
+                Functional Dependencies:
+                <table class=fd>
+                    <tr>
+                        <td>patient_id</td>
+                        <td class="arrow">⟶</td>
+                        <td>patient_name, address</td>
+                    </tr>
+                    <tr>
+                        <td>patient_id, Rx_num</td>
+                        <td>⟶</td>
+                        <td>trademark_name, generic_name</td>
+                    </tr>
+                    <tr>
+                        <td>Rx_num</td>
+                        <td>⟶</td>
+                        <td>num_refills</td>
+                    </tr>
+                    <tr>
+                        <td>Rx_num, filldate</td>
+                        <td>⟶</td>
+                        <td>num_refills_left</td>
+                    </tr>
+                </table>
+            </div>
+            <ol type="a">
+                <li>
+                    <span class="question">Is this relation in 1NF?</span><br />
+                    <span class="answer">No, the relation is not in first normal form because it is not atomic, due to the repeating groups, and it does not have a primary key. It could be made into 1NF form by writing it as:<br />
+                        <span class="relation">
+                            <b>Pharmacy</b>(<u>patient_id, Rx_num, filldate</u>, patient_name, address, trademark_name, generic_name, num_refills_left, num_refills)
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 2NF?</span><br />
+                    <span class="answer">No, the above relation is not in second normal form because it has non-prime attributes that are functionally dependent on a subset of the primary key. For example, patient_name and address depend on only patient_id. It could be made into 2NF by breaking up the single relation into four relations, where the non-prime attributes are dependent on the primary keys:<br />
+                        <span class="relation">
+                            <b>Patients</b>(<u>patient_id</u>, patient_name, address)<br />
+                            <b>PatientRxs</b>(<u>patient_id</u>, Rx_num, trademark_name, generic_name)<br />
+                            <b>Rxs</b>(<u>Rx_num</u>, num_refills)<br />
+                            <b>RxFills</b>(<u>Rx_num, filldate</u>, num_refills_left)<br />
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 3NF?</span>
+                    <span class="answer">Yes, because there are no non-prime attributes that are functionally dependant on other non-prime attributes.</span>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <span class="relation"><b>Company</b>(EmpID, EmpName, EmpAddr, (ProjID, ProjName, MgrID, MgrName, HoursWorked)</span>
+            <div class="fd">
+                Functional dependencies:
+                <table class="fd">
+                    <tr>
+                        <td>EmpID</td>
+                        <td class="arrow">⟶</td>
+                        <td>EmpName, EmpAddr</td>
+                    </tr>
+                    <tr>
+                        <td>ProjID</td>
+                        <td class="arrow">⟶</td>
+                        <td>ProjName, MgrID, MgrName</td>
+                    </tr>
+                    <tr>
+                        <td>EmpID, ProjID</td>
+                        <td class="arrow">⟶</td>
+                        <td>HoursWorked</td>
+                    </tr>
+                    <tr>
+                        <td>MgrID</td>
+                        <td class="arrow">⟶</td>
+                        <td>MgrName</td>
+                    </tr>
+                </table>
+            </div>
+            <ol type="a">
+                <li>
+                    <span class="question">Is this relation in 1NF?</span><br />
+                    <span class="answer">No, the relation is not in first normal form because it is not atomic, due to repeating groups, and it does not have a primary key. It could be made into 1NF by writing it as:<br />
+                        <span class="relation"><b>Company</b>(<u>EmpId, ProjID</u>, MgrID, EmpName, EmpAddr, ProjName, MgrName, HoursWorked)</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 2NF?</span><br />
+                    <span class="answer">No, the above relation is not in second normal form because it has non-prime attributes that are functionally dependent on a subset of the primary key. For example, EmpName and EmpAddr only depend on EmpID. It could be made into 2NF by breaking up the single relation into four relations where the non-prime attributes are dependent on the primary keys:<br />
+                        <span class="relation">
+                            <b>Employees</b>(<u>EmpID</u>, EmpName, EmpAddr)<br />
+                            <b>Projects</b>(<u>ProjID</u>, ProjName, MgrID, MgrName)<br />
+                            <b>Hours</b>(<u>EmpId, ProjID</u>, HoursWorked)<br />
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 3NF?</span><br />
+                    <span class="answer">No, the above relation is not in third normal form because one of the relations, Projects, has a non-prime attribute (MgrName) that depends on other non-prime attribute (MgrID) in the same relation. It could be made into 3NF by moving the non-prime dependent from the relation that breaks 3NF into its own relation, like this:<br />
+                        <span class="relation">
+                            <b>Employees</b>(<u>EmpID</u>, EmpName, EmpAddr)<br />
+                            <b>Projects</b>(<u>ProjID</u>, ProjName, MgrID)<br />
+                            <b>Hours</b>(<u>>EmpId, ProjID</u>, HoursWorked)<br />
+                            <b>Managers</b>(<u>MgrID</u>, MgrName<br />
+                        </span>
+                    </span>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <span class="relation"><b>Property</b>(id, county, lotNum, lotArea, price, taxRate, (datePaid, amount))</span>
+            <div class="fd">
+                Functional dependencies:
+                <table class="fd">
+                    <tr>
+                        <td>Id </td>
+                        <td class="arrow">⟶</td>
+                        <td>county, lotNum, lotArea, price, taxRate</td>
+                    </tr>
+                    <tr>
+                        <td>lotArea</td>
+                        <td class="arrow">⟶</td>
+                        <td>price</td>
+                    </tr>
+                    <tr>
+                        <td>county</td>
+                        <td class="arrow">⟶</td>
+                        <td>taxRate</td>
+                    </tr>
+                    <tr>
+                        <td>id, datePaid</td>
+                        <td class="arrow">⟶</td>
+                        <td>amount</td>
+                    </tr>
+                </table>
+            </div>
+            <ol type="a">
+                <li>
+                    <span class="question">Is this relation in 1NF?</span><br />
+                    <span class="answer">No, the relation is not in first normal form because of the repeating group (datePaid, amount). It could be made into 1NF by writing it like this:<br />
+                        <span class="relation">
+                            <b>PropertyPaid</b>(<u>id, datePaid</u>, county, lotNum, lotArea, price, taxRate, amount)
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 2NF?</span><br />
+                    <span class="answer">No, the relation is not in second normal form because some of the non-prime attributes depend on only part of the primary key. It could be made into 2NF by writing it like this:<br />
+                        <span class="relation">
+                            <b>Property</b>(<u>id</u>, county, LotNum, lotArea, price, taxRate)
+                            <b>Payments</b>(<u>id, datePaid</u>, amount)
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 3NF?</span><br />
+                    <span class="answer">No, the relation is not in third normal form because two of the non-prime attributes in the Property relation are functionally dependant on other non-prime attributes in the relation. The schema could be made into 3NF by moving the price and taxRate into separate relations representing those functional dependenices.<br />
+                        <span class="relation">
+                            <b>Properties</b>(<u>id</u>, county, LotNum, lotArea)<br />
+                            <b>Prices</b>(<u>lotArea</u>, price)<br />
+                            <b>TaxRates</b>(<u>county</u>, taxRate)<br />
+                            <b>Payments</b>(<u>id, datePaid</u>, amount)<br />
+                        </span>
+                    </span>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <span class="relation"><b>StockExchange</b>(Company, Symbol, HQ, Date, ClosePrice)</span>
+            <div class="fd">
+                Functional dependencies:
+                <table class="fd">
+                    <tr>
+                        <td>Symbol, Date</td>
+                        <td class="arrow">⟶</td>
+                        <td>Company, HQ, ClosePrice</td>
+                    </tr>
+                    <tr>
+                        <td>Symbol</td>
+                        <td class="arrow">⟶</td>
+                        <td>Company, HQ</td>
+                    </tr>
+                    <tr>
+                        <td>Symbol </td>
+                        <td class="arrow">⟶</td>
+                        <td>Company, HQ</td>
+                    </tr>
+                    <tr>
+                        <td>Symbol</td>
+                        <td class="arrow">⟶</td>
+                        <td>HQ</td>
+                    </tr>
+                </table>
+            </div>
+            <ol type="a">
+                <li>
+                    <span class="question">Is this relation in 1NF?</span><br />
+                    <span class="answer">The relation is almost in first normal form, because it is atomic, but it has no primary key. Underlining the Symbol to show that it is the primary key would make it 1NF compliant.<br />
+                        <span class="relation">
+                            <b>StockExchange</b>(<u>Symbol, Date</u>, Company, HQ, ClosePrice)
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 2NF?</span><br />
+                    <span class="answer">No, the above relation is not in second normal form, because it has non-prime attributes that are functionally dependent on a subset of the primary key. It could be made into 2NF by writing it as:<br />
+                        <span class="relation">
+                            <b>ClosePrices</b>(<u>Symbol, Date</u>, ClosePrice)<br />
+                            <b>Stocks</b>(<u>Symbol</u>, Company, HQ)
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="question">Is this relation in 3NF?</span><br />
+                    <span class="answer">Yes, the above relation is in third normal form because it has no non-prime attributes that are functionally dependant on other non-prime attributes.
+                    </span>
+                </li>
+            </ol>
+        </li>
+    </ol>
+</body>
+</html>
