@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noimageindex, nofollow, nosnippet">
+    <title>Assignment 3 - ER Diagram to Third Normal Form</title>
+    <link rel="icon" type="image/ico" href="/~z1871157/csci466/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <style>
+span.relation {
+    font-family:Consolas, "Lucida Console", Monaco, monospace; 
+}
+@media (prefers-color-scheme: light) {
+    p.erd { background-color: #eeeeee; }
+}
+@media (prefers-color-scheme: dark) {
+    p.erd { background-color: #667788; }
+}
+body {
+    max-width: 900px !important;
+}
+.primarykey {
+    text-decoration: underline;
+}
+.foreignkey {
+  position: relative;
+  display: inline-block;
+}
+.foreignkey .referencedkey {
+  visibility: hidden;
+  width: 205px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the foreignkey */
+  position: absolute;
+  z-index: 1;
+}
+
+.foreignkey:hover .referencedkey {
+  visibility: visible;
+}
+</style>
+</head>
+<body>
+    <h1>Assignment 3 - ER Diagram to Third Normal Form</h1>
+    <h2>Introduction</h2>
+    <p>
+        For this assignment, you will be converting the following ER diagram, which models the operational data for a department store, to a set of relations that conform to Third Normal Form (3NF). 
+        Use the steps from the slides that we went over in class. 
+        Make sure to indicate the primary keys by underlining them.
+        Include a list of which attributes are foreign keys, with the home relation of each foreign key indicated.
+    </p>
+    <h2>ER Diagram</h2>
+    <p align=center class="erd">
+        <img src="erd.png" width=812 height=503 />
+    </p>
+    <h2>Third Normal Form</h2>
+    <h3>Entities:</h3>
+    <ul>
+        <li>
+            <span class="relation"><b>City</b>(<u>City_Name, State</u>, HeadQuartersAddr)</span>
+        </li>
+        <li>
+            <span class="relation"><b>Store</b>(<u>Store_ID</u>, Manager, Address, <span class="foreignkey">City_Name†<span class="referencedkey">City(City_Name)</span></span>, <span class="foreignkey">State†<span class="referencedkey">City(State)</span></span>)</span>
+        </li>
+        <li>
+            <span class="relation"><b>Item</b>(<u>Item_ID</u>, Color, Description, Size)</span>
+        </li>
+        <li>
+            <span class="relation"><b>Order</b>(<u>Order_Num</u>, Date, <span class="foreignkey">Customer_Name†<span class="referencedkey">Customer(Customer_Name)</span></span>)</span>
+        </li>
+        <li>
+            <span class="relation"><b>Customer</b>(<u>Customer_Name</u>, Phone_Number, Address)</span>
+        </li>
+    </ul>
+    <h3>More-than-binary Relationships:</h3>
+    <ul>
+        <li>
+            <span class="relation"><b>ItemsStoredInCities</b>(<u><span class="primarykey foreignkey">Item_ID†<span class="referencedkey">Item(Item_ID)</span></span>, <span class="primarykey foreignkey">City_Name†<span class="referencedkey">City(City_Name)</span></span>, <span class="primarykey foreignkey">State†<span class="referencedkey">City(State)</span></span></u>, Quantity)</span>
+        </li>
+        <li>
+            <span class="relation"><b>StoresHoldItems</b>(<u><span class="primarykey foreignkey">Store_ID†<span class="primarykey referencedkey">Store(Store_ID)</span></span>, <span class="primarykey foreignkey">Item_ID†<span class="primarykey referencedkey">Item(Item_ID)</span></span></u>, Quantity)</span>
+        </li>
+        <li>
+            <span class="relation"><b>ItemsOrderedInOrders</b>(<u><span class="primarykey foreignkey">Item_ID†<span class="primarykey referencedkey">Item(Item_ID)</span></span>, <span class="primarykey foreignkey">Order_Num†<span class="primarykey referencedkey">Order(Order_Num)</span></span></u>, Quantity)</span>
+        </li>
+    </ul>
+</body>
+</html>
