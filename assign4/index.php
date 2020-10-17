@@ -50,7 +50,7 @@ if(isset($_GET["source"])) {
   visibility: visible;
 }
 body {
-    max-width: 1110px !important;
+    max-width: 1120px !important;
 }
 </style>
 </style>
