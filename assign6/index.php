@@ -80,7 +80,7 @@ foreach($tables as $table) {
             <p><?php print_query_results($connection, "SELECT DISTINCT name FROM BabyName WHERE year = 2000 LIMIT 10;"); ?></p>
         </li>
         <li>
-            <p>Show all of the names from your birth year. (Showing each name only once.)</p>
+            <p>Display the most popular male and female names from the year of your birth.</p>
             <p>
 <pre><span class="punct">(</span>
     <span class="keyword">SELECT</span> name,gender
