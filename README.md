@@ -9,3 +9,4 @@ Assignments:
 5. SQL DDL - Dog Visits (50 pts)
 6. SQL DQL - Single Table (100 pts)
 7. HTML Form (100 pts)
+8. Web forms w/PHP - Parts & Suppliers (100 pts)
