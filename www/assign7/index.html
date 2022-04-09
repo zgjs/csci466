@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 1. The title of the page should have your name and zid in it. -->
+    <title>Assignment 7 : z1234567</title>
+    <style>
+body {
+    max-width: 800px;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background-color: #eeeeee;
+    font-size: larger;
+}
+p,ol,table,form,h1 {
+    padding: 5px;
+    margin: 5px;
+    background-color: #f9f9f9;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: gray;
+    margin: 2px;
+    text-align: center;
+}
+li,th,td {
+    padding: 0.5em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    background-color: #eeeeee;
+}
+    </style>
+</head>
+<body>
+    <!-- 2. The page should have a heading at the top that says "CSCI 466 Assignment 7" -->
+    <h1 style="text-align: center;">CCSCI 466 Assignment 7</h1>
+    <!-- 3. There must be an image on your page, and that image must be part of a link to another site. -->
+    <a href="http://www.cs.niu.edu/" title="Go to NIU Computer Science website"><img alt="NIU Shield Logo" height="110" src="https://www.niu.edu/masterto/themes/Theme_4_0/common/images/niu-shield.svg" width="65" style="float: left; margin: 6px; padding: 6px;"></a><!-- from NIU CSCI home page -->
+    <!-- 4. There must be three paragraphs worth of text. Have each in its own paragraph element. Be creative. -->
+    <p>The rain in Spain stays mainly in the plain!</p>
+    <p>The quick brown fox jumps over the lazy dog!</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <!-- 5. An ordered list of your top ten favorite foods must be shown. -->
+    <ol>
+        <li>Barbecue</li>
+        <li>Sushi</li>
+        <li>Fried chicken</li>
+        <li>Stir-fry</li>
+        <li>Fettucini Alfredo</li>
+        <li>Pizza</li>
+        <li>Ramen</li>
+        <li>Tacos</li>
+        <li>Macaroni and Cheese</li>
+        <li>Hotdog</li>
+    </ol>
+    <!-- 6. Include an HTML table element that shows a 5 x 5 multiplication table, with rows and columns for the numbers 1, 3, 4,  7, 9 -->
+    <table border=1>
+        <tr>
+            <th>&times;</th><th>1</th><th>3</th><th>5</th><th>7</th><th>9</th>
+        </tr>
+        <tr>
+            <td><b>1</b></td><td>1</td><td>3</td><td>5</td><td>7</td><td>9</td>
+        </tr>
+        <tr>
+            <td><b>3</b></td><td>3</td><td>9</td><td>15</td><td>21</td><td>27</td>
+        </tr>
+        <tr>
+            <td><b>5</b></td><td>5</td><td>15</td><td>25</td><td>35</td><td>45</td>
+        </tr>
+        <tr>
+            <td><b>7</b></td><td>7</td><td>21</td><td>35</td><td>49</td><td>63</td>
+        </tr>
+        <tr>
+            <td><b>9</b></td><td>9</td><td>27</td><td>45</td><td>63</td><td>81</td>
+        </tr>
+    </table>
+    <!-- 7. There must be a form element meeting the the following requirements: -->
+    <!--     a. The form must submit to http://students.cs.niu.edu/~z035690/asnsubmit.php
+             b. The values submitted by the form must not appear in the URL -->
+    <form action="http://students.cs.niu.edu/~z035690/asnsubmit.php" method="POST">
+        <!-- c. There must be a single line text box whose value is associatred with the name "banana". -->
+        <b>Banana:</b> 
+        <input type="text" name="banana" width="100%" style="width: 80%;" />
+        <br />
+        <!-- d. There must be a series of three checkboxes.
+                They should be labeled "Carbohydrates", "Fat", and "Protein",
+                and submit those values under the name "macros". -->
+        <b>Macros:</b> 
+        <input type="checkbox" name="macros" id="Carbohydrates" value="Carbohydrates" /><label for="Carbohydrates">Carbohydrates</label> &nbsp; 
+        <input type="checkbox" name="macros" id="Fat" value="Fat" /><label for="Fat">Fat</label> &nbsp; 
+        <input type="checkbox" name="macros" id="Protein" value="Protein" /><label for="Protein">Protein</label>
+        <br />
+        <!-- e. There must be a group of three radio buttons labeled "A", "B", and "C".
+                They should submit a value that matches their label and the server should be able to access it under the name "abc".
+                The "A" radio button should start off in a checked state. -->
+        <b>ABC:</b>
+        <label for="A">A</label><input type="radio" name="abc" id="A" value="A" checked /> &nbsp; 
+        <label for="B">B</label><input type="radio" name="abc" id="B" value="B" /> &nbsp; 
+        <label for="C">C</label><input type="radio" name="abc" id="C" value="C" />
+        <!-- g. There must be a field in your form that is not displayed in the browser, but which contains your zid as a vlue and
+                submits it under the name "zid". -->
+        <input type="hidden" name="zid" value="z1234567" />
+        <br />
+        <!-- h. The submit button must have a caption of "Make it so". -->
+        <input type="submit" name="submit" value="Make it so" style="font-size:x-large; width: 10em; border-width: 2px; text-align: center;" />
+    </form>
+</body>
+</html>
