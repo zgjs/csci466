@@ -1,0 +1,173 @@
+me@turing:~/csci466/assign10$ ./books
+
+    ╔════════════════════════════╗
+    ║   Welcome to Henrybooks!   ║
+    ║  Please make a selection:  ║
+    ║   ╭─────────────────────   ║
+    ║   │  1. Book List      │   ║
+    ║   │  2. Author Search  │   ║
+    ║   │  3. Title Search   │   ║
+    ║   │  4. Quit           │   ║
+    ║   ╰─────────────────────   ║
+    ║ What would you like to do? ║
+    ╚════════════════════════════╝
+    Your choice: 1
+
+╔══════════════════════════════════════════╦═══════════════════════╦═══════╗
+║ Title                                    ║ Author                ║ Cost  ║
+╠══════════════════════════════════════════╬═══════════════════════╬═══════╣
+║ A Deepness in the Sky                    ║ Vernor Vintage        ║ 7.19  ║
+║ A Guide to SQL                           ║ Philip Pratt          ║ 37.95 ║
+║ Band of Brothers                         ║ Stephen E. Ambrose    ║ 9.60  ║
+║ Beloved                                  ║ Toni Morrison         ║ 12.95 ║
+║ Black House                              ║ Stephen King          ║ 18.81 ║
+║ Black House                              ║ Peter Straub          ║ 18.81 ║
+║ Catch-22                                 ║ Joseph Heller         ║ 12.00 ║
+║ Dreamcatcher: A Novel                    ║ Stephen King          ║ 19.60 ║
+║ East of Eden                             ║ John Steinbeck        ║ 12.95 ║
+║ Electric Light                           ║ Seamus Heaney         ║ 14.00 ║
+║ Franny and Zooey                         ║ J.D. Salinger         ║ 5.99  ║
+║ Godel, Escher, Bach                      ║ Douglas R. Hofstadter ║ 14.00 ║
+║ Group: Six People in Search of a Life    ║ Paul Solotaroff       ║ 10.40 ║
+║ Harry Potter and the Goblet of Fire      ║ J.K. Rowling          ║ 18.16 ║
+║ Harry Potter and the Prisoner of Azkaban ║ J.K. Rowling          ║ 13.96 ║
+║ Jazz                                     ║ Toni Morrison         ║ 12.95 ║
+║ Magic Terror                             ║ Peter Straub          ║ 7.99  ║
+║ Nine Stories                             ║ J.D. Salinger         ║ 5.99  ║
+║ Of Mice and Men                          ║ John Steinbeck        ║ 6.95  ║
+║ Second Wind                              ║ Dick Francis          ║ 24.95 ║
+║ Slay Ride                                ║ Dick Francis          ║ 6.99  ║
+║ Song of Solomon                          ║ Toni Morrison         ║ 14.00 ║
+║ The Catcher in the Rye                   ║ J.D. Salinger         ║ 5.99  ║
+║ The Edge                                 ║ Dick Francis          ║ 6.99  ║
+║ The Fall                                 ║ Albert Camus          ║ 8.00  ║
+║ The Grapes of Wrath                      ║ John Steinbeck        ║ 13.00 ║
+║ The Soul of a New Machine                ║ Tracy Kidder          ║ 11.16 ║
+║ The Stranger                             ║ Albert Camus          ║ 8.00  ║
+║ To Kill a Mockingbird                    ║ Harper Lee            ║ 18.00 ║
+║ Travels with Charley                     ║ John Steinbeck        ║ 7.95  ║
+║ Treasure Chests                          ║ Lon Schleining        ║ 24.46 ║
+║ Treasure Chests                          ║ Randy O'Rourke        ║ 24.46 ║
+║ Van Gogh and Gauguin                     ║ Bradley Collins, Jr.  ║ 21.00 ║
+║ Van Gogh and Gauguin                     ║ Bradley Collins       ║ 21.00 ║
+║ Venice                                   ║ Gary Wills            ║ 24.50 ║
+║ When Rabbit Howls                        ║ Truddi Chase          ║ 6.29  ║
+╚══════════════════════════════════════════╩═══════════════════════╩═══════╝
+Press enter to continue...
+
+    ╔════════════════════════════╗
+    ║   Welcome to Henrybooks!   ║
+    ║  Please make a selection:  ║
+    ║   ╭─────────────────────   ║
+    ║   │  1. Book List      │   ║
+    ║   │  2. Author Search  │   ║
+    ║   │  3. Title Search   │   ║
+    ║   │  4. Quit           │   ║
+    ║   ╰─────────────────────   ║
+    ║ What would you like to do? ║
+    ╚════════════════════════════╝
+    Your choice: 2
+
+    ╔═══════════════════════════════════════════════════════════╗
+    ║                       Author Search                       ║
+    ║ You may search by all or part of an author's name.        ║
+    ║ Results for partial matches will be returned.             ║
+    ║ Please enter the author's first and last name separately. ║
+    ║ Hit enter when done typing each name.                     ║
+    ╚═══════════════════════════════════════════════════════════╝
+Author's first name:
+Author's last  name: King
+
+╔═══════════╦══════════════════════════════════════════╦═══════════════════════╦═══════╗
+║ Book Code ║ Title                                    ║ Author                ║ Price ║
+╠═══════════╬══════════════════════════════════════════╬═══════════════════════╬═══════╣
+║ 1351      ║ Dreamcatcher: A Novel                    ║ Stephen King          ║ 19.60 ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry On The Hill              ║ 1289 Bedford          ║     4 ║
+║                     ║ Henry Brentwood                ║ Brentwood Mall        ║     2 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 9611      ║ Black House                              ║ Stephen King          ║ 18.81 ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry Downtown                 ║ 16 Riverview          ║     2 ║
+╚═════════════════════╩════════════════════════════════╩═══════════════════════╩═══════╝
+Press enter to continue...
+
+    ╔════════════════════════════╗
+    ║   Welcome to Henrybooks!   ║
+    ║  Please make a selection:  ║
+    ║   ╭─────────────────────   ║
+    ║   │  1. Book List      │   ║
+    ║   │  2. Author Search  │   ║
+    ║   │  3. Title Search   │   ║
+    ║   │  4. Quit           │   ║
+    ║   ╰─────────────────────   ║
+    ║ What would you like to do? ║
+    ╚════════════════════════════╝
+    Your choice: 3
+
+    ╔══════════════════════════════════════════════════╗
+    ║                  Title Search                    ║
+    ║ You may search by all or part of the book title. ║
+    ║ Results for partial matches will be returned.    ║
+    ╚══════════════════════════════════════════════════╝
+Title: and
+
+╔═══════════╦══════════════════════════════════════════╦═══════════════════════╦═══════╗
+║ Book Code ║ Title                                    ║ Author                ║ Price ║
+╠═══════════╬══════════════════════════════════════════╬═══════════════════════╬═══════╣
+║ 2226      ║ Harry Potter and the Prisoner of Azkaban ║ J.K. Rowling          ║ 13.96 ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry Downtown                 ║ 16 Riverview          ║     3 ║
+║                     ║ Henry Brentwood                ║ Brentwood Mall        ║     2 ║
+║                     ║ Henry Eastshore                ║ Eastshore Mall        ║     1 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 2281      ║ Van Gogh and Gauguin                     ║ Bradley Collins, Jr.  ║ 21.00 ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry Eastshore                ║ Eastshore Mall        ║     3 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 2766      ║ Of Mice and Men                          ║ John Steinbeck        ║ 6.95  ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry Brentwood                ║ Brentwood Mall        ║     2 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 6328      ║ Band of Brothers                         ║ Stephen E. Ambrose    ║ 9.60  ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry On The Hill              ║ 1289 Bedford          ║     2 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 6908      ║ Franny and Zooey                         ║ J.D. Salinger         ║ 5.99  ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry On The Hill              ║ 1289 Bedford          ║     2 ║
+╠═══════════╦═════════╩════════════════════════════════╬═══════════════════════╬═══════╣
+║ 7443      ║ Harry Potter and the Goblet of Fire      ║ J.K. Rowling          ║ 18.16 ║
+║           ╚═════════╦════════════════════════════════╬═══════════════════════╬═══════╣
+║           Inventory ║ Branch Name                    ║ Branch Location       ║ Stock ║
+║                     ╠════════════════════════════════╬═══════════════════════╬═══════╣
+║                     ║ Henry Eastshore                ║ Eastshore Mall        ║     1 ║
+╚═════════════════════╩════════════════════════════════╩═══════════════════════╩═══════╝
+Press enter to continue...q
+
+    ╔════════════════════════════╗
+    ║   Welcome to Henrybooks!   ║
+    ║  Please make a selection:  ║
+    ║   ╭────────────────────╮   ║
+    ║   │  1. Book List      │   ║
+    ║   │  2. Author Search  │   ║
+    ║   │  3. Title Search   │   ║
+    ║   │  4. Quit           │   ║
+    ║   ╰────────────────────╯   ║
+    ║ What would you like to do? ║
+    ╚════════════════════════════╝
+    Your choice: 4

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noimageindex, nofollow, nosnippet">
+    <title>CSCI 466 - Assignment 10 - MariaDB in C++</title>
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <style>
+span.relation {
+    font-family:Consolas, "Lucida Console", Monaco, monospace; 
+}
+.question {
+    font-family:'Times New Roman', Times, serif;
+    font-size: larger;
+}
+.answer {
+    font-family:Arial, Helvetica, sans-serif;
+}
+div.fd {
+    font-size:small;
+}
+table.fd {
+    table-layout: auto;
+    max-width: 350px;
+}
+body {
+    max-width: 1180px !important;
+}
+</style>
+</head>
+<body>
+    <h1>CSCI 466 - Assignment 10</h1>
+    <h2>MariaDB in C++ (100 pts)</h2>
+    <h3>The Task</h3>
+    <p>For this assignment, you will be writing a C/C++ program that prints reports on the books found in the henrybooks database from our MariaDB server.</p>
+    <h3>Requirements</h3>
+    <p>
+        Your program will show a menu with three options for reports to show. The user will choose an option,
+        and your program will use the MariaDB C API to run the necessary queries, displaying the results, neatly
+        formatted, in the terminal.
+    </p>
+    <ol>
+        <li><strong>Book List:</strong>
+            For each book, print the title, the author(s), and the cost. Do not assume that a book will
+            be written by a single author. Use a subquery to accomplish this. Sort the authors for each book based
+            on their Sequence.</li>
+        <li><strong>Author Search</strong>
+            Prompt the user for the name of an Author. Print a report showing all books by
+            authors whose first or last names match the user-supplied name. For each of the books found, show a
+            line in your output with the book code, the title, the name of the author that matched your search, and
+            the price; then show individual lines (indented below the original line) for each branch, each showing
+            how many of the current book are on hand, or a single line indicating that it is out of stock everywhere if
+            no branches have any on hand. Branches should be displayed as their names and not as their numerical
+            identifiers, in alphabetical order
+        </li>
+        <li><strong>Title Search</strong>
+            Same as the author search in feature 2, but search by title instead of by author. For the
+            author field, use the first author only (by sequence number).
+        </li>
+    </ol>
+    <p>
+        There should also be an option to quit. After performing whichever option is chosen (obviously except for
+        the one to quit), your program should show the menu again and allow the user to choose a new option to run.
+    </p>
+    <h3>Demo</h3>
+    <div style="max-width: 800px; margin: auto;">
+        <script id="asciicast-5jlvby7baUoAJg6hiGhL3K8W2" src="https://asciinema.org/a/5jlvby7baUoAJg6hiGhL3K8W2.js" async></script>
+    </div>
+    <h3>Notes</h3>
+    <ul>
+        <li>
+            The grading for this will be done by compiling and running this program on turing and/or hopper. If
+            your program does not compile and run properly on turing and hopper, you will not receive credit, so
+            make sure to test it there
+        </li>
+        <li>
+            If your program needs any flags other than the ones used in the examples of gcc/g++ in the slides in
+            order to compile, you need to let us know when you submit.
+        </li>
+        <li>
+            Don’t forget to document your code.
+        </li>
+        <li>
+            It is <em>not</em> a requirement that every feature be implemented with a single query. You can break the tasks
+            down into smaller queries if you find it makes solving the problem easier.
+        </li>
+        <li>
+            As always, you should be submitting your own work. Do not try to cheat or plagiarize other people’s programs.
+        </li>
+    </ul>
+    <h3>What to turn in?</h3>
+    <p>Submit, through Blackboard, the following:</p>
+    <ul>
+        <li>Your C++ source code, in a file called <code>books.cc</code></li>
+        <li>Any other source code or header files your program needs in order to compile</li>
+    </ul>
+    <h3>Schema for <code>henrybooks</code></h3>
+    <p>For your convenience, I have included information on the schema of <code>henrybooks</code> below:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Table</th>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Null</th>
+                <th>Key</th>
+                <th>Default</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Author</th>
+                <td>AuthorNum</td>
+                <td><code>decimal(2,0)</code></td>
+                <td>NO</td>
+                <td>PRI</td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>AuthorLast</td>
+                <td><code>char(12)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>AuthorFirst</td>
+                <td><code>char(10)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th>Book</th>
+                <td>BookCode</td>
+                <td><code>char(4)</code></td>
+                <td>NO</td>
+                <td>PRI</td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>Title</td>
+                <td><code>char(40)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>PublisherCode</td>
+                <td><code>char(3)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>Type</td>
+                <td><code>char(3)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>Price</td>
+                <td><code>decimal(8,2)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>Paperback</td>
+                <td><code>char(1)</code></td>
+                <td>YES</td>
+                <td></td>
+                <td>NULL</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
