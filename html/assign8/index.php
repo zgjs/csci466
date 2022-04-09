@@ -140,7 +140,7 @@ SQL;
         $pdo->exec($sql);
         echo "<p>The database was reset</p>\n";
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "<p class=\"error\">There was a problem resetting the database: ${$e->getMessage()}</p>\n";
     }
 }
@@ -148,13 +148,13 @@ function get_table_num_rows(&$pdo, $table) {
     try {
         return intval($pdo->query("SELECT COUNT(*) FROM $table;")->fetchColumn());
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         return 0;
     }
 }
-function print_header($title) {
+function print_header($title, $pageicon = "") {
     $li = array();
-    foreach(['admin','parts','suppliers','inventory'] as $page) {
+    foreach(['admin','parts','suppliers','buy','inventory'] as $page) {
         if(strpos($_SERVER['REQUEST_URI'], "?page=$page") !== false) {
             $li[$page] = ' class="current"';
         } else {
@@ -165,6 +165,18 @@ function print_header($title) {
         $li['home'] = ' class="current"';
     } else {
         $li['home'] = "";
+    }
+    $icons = [
+        'admin' => '&#x1F6E0;&#xFE0F;',
+        'home' => '&#x1F3E0;',
+        'main' => '&#x1F3E0;',
+        'parts' => '&#x1F529;',
+        'suppliers' => '&#x1F468;&#x200D;&#x1F4BC;',
+        'buy' => '&#x1F6D2;',
+        'inventory' => '&#x1F4E6;'
+    ];
+    if(array_key_exists($pageicon, $icons)) {
+        $title = $icons[$pageicon] . ' ' . $title;
     }
     echo <<<HTML
 <!DOCTYPE html>
@@ -335,6 +347,7 @@ div.add-part,div.parts-list,div.add-supplier,div.suppliers-list,div.inventory-li
             <li${li['home']}><a href="?">&#x1F3E0; Home</a></li>
             <li${li['parts']}><a href="?page=parts">&#x1F529; Parts</a></li>
             <li${li['suppliers']}><a href="?page=suppliers">&#x1F468;&#x200D;&#x1F4BC; Suppliers</a></li>
+            <li${li['buy']}><a href="?page=buy">&#x1F6D2; Buy </a></li>
             <li${li['inventory']}><a href="?page=inventory">&#x1F4E6; Inventory</a></li>
             <li${li['admin']}><a href="?page=admin">&#x1F6E0;&#xFE0F; Admin</a></li>
         </ul>
@@ -404,7 +417,7 @@ function add_supplier(&$pdo, $supplierid, $sname, $status, $city) {
             echo "            <p class=\"warning\">Supplier could not be added to the database. <a href=\"javascript:history.back()\">[Go back]</a></p>\n";
         }
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "            <p class=\"error\">There was a problem adding the supplier: ${$e->getMessage()}<br /><a href=\"javascript:history.back()\">[Go back]</a></p>\n";
     }
 }
@@ -423,12 +436,40 @@ function add_part(&$pdo, $partid, $pname, $color, $weight) {
             echo "            <p class=\"warning\">Part could not be added to the database. <a href=\"javascript:history.back()\">[Go back]</a></p>\n";
         }
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "            <p class=\"error\">There was a problem adding the part: ${$e->getMessage()}<br /><a href=\"javascript:history.back()\">[Go back]</a></p>\n";
     }
 }
+function inventory_exists(&$pdo, $supplierid, $partid) {
+    $sql = <<<SQL
+    SELECT COUNT(*) FROM SP
+    WHERE S=:supplierid AND P=:partid;
+    SQL;
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':supplierid', $supplierid, PDO::PARAM_STR, 10);
+        $stmt->bindParam(':partid', $partid, PDO::PARAM_STR, 10);
+        return ($stmt->execute() && $stmt->rowCount() != 0 && (int)$stmt->fetchColumn() != 0);
+    }
+    catch (PDOException $e) {
+        echo "            <p class=\"error\">Unable to check if $supplierid carries $partid. PDOException: ${$e->getMessage()}<br /></p>\n";
+    }
+    return false;
+}
 function add_inventory(&$pdo, $supplierid, $partid, $qty) {
-    $sql = "INSERT INTO SP (`S`, `P`, `QTY`) VALUES (:supplierid, :partid, :qty);";
+    if ($qty < 1) {
+        echo "            <p>Sorry, you can't add quantity less than 1. <a href=\"javascript:history.back()\">[Go back]</a></p>\n";
+        return;
+    }
+    if(inventory_exists($pdo, $supplierid, $partid)) {
+        $sql = <<<SQL
+        UPDATE SP
+        SET QTY = QTY + :qty
+        WHERE S=:supplierid AND P=:partid;
+        SQL;
+    } else {
+        $sql = "INSERT INTO SP (`S`, `P`, `QTY`) VALUES (:supplierid, :partid, :qty);";
+    }
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':supplierid', $supplierid, PDO::PARAM_STR, 10);
@@ -440,8 +481,64 @@ function add_inventory(&$pdo, $supplierid, $partid, $qty) {
             echo "            <p class=\"warning\">Inventory could not be added to the database. <a href=\"javascript:history.back()\">[Go back]</a></p>\n";
         }
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "            <p class=\"error\">There was a problem adding the inventory: ${$e->getMessage()}<br /><a href=\"javascript:history.back()\">[Go back]</a></p>\n";
+    }
+}
+function get_inventory_availability(&$pdo, $supplierid, $partid) {
+    $qty = 0;
+    $sql = <<<SQL
+    SELECT QTY FROM SP
+    WHERE S=:supplierid AND P=:partid;
+    SQL;
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':supplierid', $supplierid, PDO::PARAM_STR, 10);
+        $stmt->bindParam(':partid', $partid, PDO::PARAM_STR, 10);
+        if($stmt->execute()) {
+            if($stmt->rowCount() == 0) {
+                echo "            <p>Sorry. Part $partid is not available from supplier $supplierid.</p>\n";
+            } else {
+                $qty = (int)$stmt->fetchColumn();
+            }
+        } else {
+            echo "            <p class=\"warning\">Unable to check if $supplierid carries $partid.</p>\n";
+        }
+    }
+    catch (PDOException $e) {
+        echo "            <p class=\"error\">Unable to check if $supplierid carries $partid. PDOException: ${$e->getMessage()}<br /></p>\n";
+    }
+    return $qty;
+}
+function subtract_inventory(&$pdo, $supplierid, $partid, $qty) {
+    if($qty <= 0) {
+        echo "            <p>Sorry, your order of ($qty) of part $partid from supplier $supplierid could not be completed because quantity must be greater than 0.<a href=\"?page=buy\">[OK]</a></p>\n";
+    } elseif(get_inventory_availability($pdo, $supplierid, $partid) >= (int)$qty) {
+        $sql = <<<SQL
+        UPDATE SP
+        SET QTY = QTY - :qty
+        WHERE S=:supplierid AND P=:partid;
+        SQL;
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':supplierid', $supplierid, PDO::PARAM_STR, 10);
+            $stmt->bindParam(':partid', $partid, PDO::PARAM_STR, 10);
+            $stmt->bindParam(':qty', $qty, PDO::PARAM_STR, 255);
+            if($stmt->execute()) {
+                if($stmt->rowCount() > 0) {
+                    echo "            <p>You successfully purchased ($qty) of part $partid from supplier $supplierid. <a href=\"?page=buy\">[OK]</a></p>\n";
+                } else {
+                    echo "            <p>Your purchase of ($qty) of part $partid from supplier $supplierid could not be completed.<a href=\"javascript:history.back()\">[Go back]</a></p>\n";
+                }
+            } else {
+                echo "            <p class=\"warning\">Your purchase of ($qty) of part $partid from supplier $supplierid could not be completed.<a href=\"javascript:history.back()\">[Go back]</a></p>\n";
+            }
+        }
+        catch (PDOException $e) {
+            echo "            <p class=\"error\">There was a problem and your purchase of ($qty) of part $partid from supplier $supplierid could not be completed. PDOException: ${$e->getMessage()}<br /><a href=\"javascript:history.back()\">[Go back]</a></p>\n";
+        }
+    } else {
+        echo "            <p>Sorry, there is not enough of inventory to fulfill your order of ($qty) of part $partid from supplier $supplierid. <a href=\"javascript:history.back()\">[Go back]</a></p>\n";
     }
 }
 function print_parts_table(&$rows) {
@@ -657,7 +754,7 @@ function show_supplier(&$pdo, $supplierid) {
         $stmt->execute([$supplierid]);
         $row = $stmt->fetch();
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "        <p class=\"error\">There was an error retrieving the supplier from the database.</p>\n";
         return;
     }
@@ -673,7 +770,7 @@ SQL;
         $stmt->execute([$supplierid]);
         $rows = $stmt->fetchAll();
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "            <p class=\"error\">There was an error retrieving the supplier from the database.</p>\n";
         return;
     }
@@ -691,7 +788,7 @@ function show_part(&$pdo, $partid) {
         $stmt->execute([$partid]);
         $row = $stmt->fetch();
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "        <p class=\"error\">There was an error retrieving the part from the database.</p>\n";
         return;
     }
@@ -707,7 +804,7 @@ SQL;
         $stmt->execute([$_GET['partid']]);
         $rows = $stmt->fetchAll();
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "            <p class=\"error\">There was an error retrieving the part from the database.</p>\n";
         return;
     }
@@ -725,7 +822,7 @@ function delete_multiple(&$pdo, $table, $column, array $values) {
         $stmt = $pdo->prepare($sql);
         $stmt->execute($values);
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "<p class=\"error\">There was a problem deleting rows: ${$e->getMessage()}</p>";
     }
     return $stmt->rowCount();
@@ -747,7 +844,7 @@ function delete_supplier(&$pdo, array $supplierid) {
         $stmt->execute($supplierid);
         $count = intval($stmt->fetchColumn());
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "<p class=\"error\">There was a problem searching the database: ${$e->getMessage()}</p>";
         return;
     }
@@ -792,7 +889,7 @@ function delete_part(&$pdo, array $partid) {
         $stmt->execute($partid);
         $count = intval($stmt->fetchColumn());
     }
-    catch (PDOexception $e) {
+    catch (PDOException $e) {
         echo "<p class=\"error\">There was a problem searching the database: ${$e->getMessage()}</p>";
         return;
     }
@@ -908,10 +1005,41 @@ HTML;
         echo "<option value=\"$part_id\">$part_id</option>";
     }
     echo <<<HTML
-                            <td><input type="number" name="qty" value="0" style="width: 4em;" /></td>
+                            <td><input type="number" name="qty" value="1" min="1" style="width: 4em;" /></td>
                         </tr>
                     </table>
                     <button type="submit" name="action" value="add" style="float: left; margin: 1em;">Add Inventory</button>
+                </form>
+            </div>
+HTML;
+}
+
+function print_buy_form(array $supplier_ids, array $part_ids){
+    echo <<<HTML
+            <div class="buy-inventory">
+                <form method="POST">
+                    <table style="float: left; margin-left: 1em;">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <th>Supplier&nbsp;ID</th>
+                            <th>Part&nbsp;ID</th>
+                            <th>&nbsp;Quantity&nbsp;</th>
+                        </tr>
+                            <td><span style="font-size: 0.75em;">&#x1F6D2;</span></td>
+                            <td><select name="supplierid">
+HTML;
+    foreach($supplier_ids as $supplier_id) {
+        echo "<option value=\"$supplier_id\">$supplier_id</option>";
+    }
+    echo "</select></td>\n                            <td><select name=\"partid\">";
+    foreach($part_ids as $part_id) {
+        echo "<option value=\"$part_id\">$part_id</option>";
+    }
+    echo <<<HTML
+                            <td><input type="number" name="qty" value="1" min="1" style="width: 4em;" /></td>
+                        </tr>
+                    </table>
+                    <button type="submit" name="action" value="checkout" style="float: left; margin: 1em;">Buy Parts</button>
                 </form>
             </div>
 HTML;
@@ -954,6 +1082,18 @@ function print_suppliers_page(&$pdo, $action) {
             break;
     }
 }
+function print_buy_page(&$pdo, $action) {
+    switch($action) {
+        case "checkout":
+            subtract_inventory($pdo, $_POST['supplierid'], $_POST['partid'], $_POST['qty']);
+            break;
+        case "none":
+        case "list":
+        default:
+            print_buy_form(get_ids($pdo,'S'),get_ids($pdo,'P'));
+            break;
+    }
+}
 function print_inventory_page(&$pdo, $action) {
     switch($action) {
         case "add":
@@ -978,6 +1118,9 @@ function print_body(&$pdo,$page,$action) {
         case "admin":
             print_admin_page($pdo, $action);
             break;
+        case "buy":
+            print_buy_page($pdo, $action);
+            break;
         case "parts":
             print_parts_page($pdo, $action);
             break;
@@ -989,7 +1132,7 @@ function print_body(&$pdo,$page,$action) {
             break;
     }
 }
-if(isset($_GET['page']) && in_array($_GET['page'], ['admin', 'parts', 'suppliers','inventory'])) {
+if(isset($_GET['page']) && in_array($_GET['page'], ['admin', 'parts', 'suppliers', 'buy', 'inventory'])) {
     $page = $_GET['page'];
 } else {
     $page = 'main';
@@ -1000,18 +1143,21 @@ if(isset($_GET['action']) && in_array($_GET['action'], ['list', 'show'])) {
 } elseif(isset($_POST['action']) && in_array($_POST['action'], ['add', 'remove', 'reset'])) {
     $action = $_POST['action'];
     $title = ucwords("$action $page");
+} elseif(isset($_POST['action']) && in_array($_POST['action'], ['checkout'])) {
+    $action = $_POST['action'];
+    $title = ucwords("$action");
 } else {
     $action = 'none';
     $title = ucwords($page);
 }
-print_header($title);
+print_header($title, $page);
 include '/var/www/php.inc/db.inc.php';
 try {
     $dsn = "mysql:host=$servername;dbname=$dbname";
     $pdo = new PDO($dsn, $username, $password);
     //echo "        <p><pre>"; print_r($_POST); echo "</pre></p>\n";
     print_body($pdo,$page,$action);
-} catch (PDOexception $e) {
+} catch (PDOException $e) {
     echo "<p class=error>Connection to database failed: ${$e->getMessage()}</p>";
 }
 ?>
