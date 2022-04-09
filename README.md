@@ -4,6 +4,8 @@
 
 🌐 View on the web at [csci466.zgjs.app](https://csci466.zgjs.app/)
 
+![466-demo](https://user-images.githubusercontent.com/59938457/162587595-52115250-821b-42fb-8be6-ea4d897d28c3.gif)
+
 ### Assignments:
 1. ER Diagram - Fitness Tracker (50 pts)
 2. Normalization (50 pts)
