@@ -1,20 +1,14 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-if(isset($_GET["source"])) {
-    highlight_file('index.php');
-    exit();
-}
+include '/var/www/php.inc/highlight.inc.php';
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="robots" content="noimageindex, nofollow, nosnippet">
     <title>Assignment 6 - SQL DQL - Single Table</title>
-    <link rel="icon" type="image/ico" href="/~z1871157/csci466/favicon.ico" />
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
-    <link rel="stylesheet" href="/~z1871157/csci466/sql.css" />
+    <link rel="stylesheet" href="/sql.css" />
 </head>
 <body>
     <h1>Assignment 6 - SQL DQL - Single Table</h1>
@@ -32,8 +26,8 @@ if(isset($_GET["source"])) {
 <pre><span class="keyword">USE</span> BabyName<span class="punct">;</span></pre>
             </p>
             <?php
-include '/home/data/www/z1871157/php.inc/db.inc.php';
-include '../table_routines.inc.php';
+include '/var/www/php.inc/db.inc.php';
+include '/var/www/php.inc/table_routines.inc.php/';
 // Connect to BabyName database
 $database = 'BabyName';
 $connection = new mysqli($servername, $username, $password, $database);
@@ -96,7 +90,16 @@ foreach($tables as $table) {
     <span class="keyword">LIMIT</span> <span class="number">1</span>
 <span class="punct">);</span></pre>
             </p>
-            <p><?php print_query_results($connection, "(SELECT name,gender FROM BabyName WHERE gender = 'M' AND year = 2000 ORDER BY count DESC LIMIT 1) UNION (SELECT name,gender FROM BabyName WHERE gender = 'F' AND year = 2000 ORDER BY count DESC LIMIT 1);"); ?></p>
+            <p><?php
+$sql = <<<SQL
+(
+    SELECT name,gender FROM BabyName WHERE gender = 'M' AND year = 2000 ORDER BY count DESC LIMIT 1
+) UNION (
+    SELECT name,gender FROM BabyName WHERE gender = 'F' AND year = 2000 ORDER BY count DESC LIMIT 1
+);
+SQL;
+print_query_results($connection, $sql);
+?></p>
         </li>
         <li>
             <p>Show all the information available about names similar to your name (or the one you adopted from above), sorted in alphabetical order by name, then within that, by count, and finally, by the year.</p>

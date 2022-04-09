@@ -1,5 +1,5 @@
 -- CSCI 466 Databases, section 2
--- Greg Sledz <z1871157@students.niu.edu>
+-- zgjs <zgjs@zgjs.dev>
 -- Assignment 5, due Wednesday, October 7, 2020
 
 -- 1. Run a statement that will remove all of the tables that will be created below. This will allow the script to be run again without any errors caused by existing tables.

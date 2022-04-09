@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="robots" content="noimageindex, nofollow, nosnippet">
     <title>Assignment 3 - ER Diagram to Third Normal Form</title>
-    <link rel="icon" type="image/ico" href="/~z1871157/csci466/favicon.ico" />
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
     <style>
 span.relation {
@@ -77,7 +77,7 @@ body {
             <span class="relation"><b>Customer</b>(<u>Customer_Name</u>, Phone_Number, Address)</span>
         </li>
     </ul>
-    <h3>More-than-binary Relationships:</h3>
+    <h3>Many-to-many or more-than-binary Relationships:</h3>
     <ul>
         <li>
             <span class="relation"><b>ItemsStoredInCities</b>(<u><span class="primarykey foreignkey">Item_ID†<span class="referencedkey">Item(Item_ID)</span></span>, <span class="primarykey foreignkey">City_Name†<span class="referencedkey">City(City_Name)</span></span>, <span class="primarykey foreignkey">State†<span class="referencedkey">City(State)</span></span></u>, Quantity)</span>

@@ -1,7 +1,7 @@
 /*
  * CSCI 466 - Section 2
  * Assignment 6 - SQL-DML - Single Table
- * Greg Sledz <1871157@students.niu.edu>
+ * zgjs <zgjs@zgjs.dev>
  */
 
 -- 1. Select the BabyName database.
@@ -17,8 +17,8 @@ DESCRIBE BabyName;
 --    Some people's names may not be present in the databse.
 --    If your name is one of those, then use 'Chad' if you are male, or 'Stacy' if you are female.
 --    If you don't feel you fit inot one of those, feel free to use 'Pat'.
-\! echo "Years that 'Greg' appears in BabyName':"
-SELECT DISTINCT year FROM BabyName WHERE name = 'Greg';
+\! echo "Years that 'zgjs' appears in BabyName':"
+SELECT DISTINCT year FROM BabyName WHERE name = 'zgjs';
 
 -- 5. Show all of the names from your birth year. (Showing each name only once.)
 \! echo "Names from 1990:"
@@ -42,8 +42,8 @@ SELECT DISTINCT name FROM BabyName WHERE year = 1990;
 
 -- 7. Show all the information available about names similar to your name (or the one you adopted from above),
 --    sorted in alphabetical order by name, then within that, by count, and finally, by the year.
-\! echo "All info about names similar to 'Greg':"
-SELECT * FROM BabyName WHERE name LIKE '%Greg%' ORDER BY name,count,year;
+\! echo "All info about names similar to 'zgjs':"
+SELECT * FROM BabyName WHERE name LIKE '%zgjs%' ORDER BY name,count,year;
 
 -- 8. Show how many rows there are in the table.
 \! echo "How many rows in the BabyName table:"

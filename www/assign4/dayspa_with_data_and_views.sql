@@ -1,7 +1,7 @@
 /* CSCI 466 - Section 2
  * Assignment 4 - Serenity Springs Day Spa
  * SQL Model
- * Greg Sledz <z1871157@students.niu.edu>
+ * zgjs <zgjs@zgjs.dev>
  *
  * This is my implementation of the Day Spa assignment, including all the views.
  * Implementing the views in the database was not requried in the asssignment, but
