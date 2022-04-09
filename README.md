@@ -11,3 +11,5 @@ Assignments:
 7. HTML Form (100 pts)
 8. Web forms w/PHP - Parts & Suppliers (100 pts)
 9. Transactions (75 pts)
+10. MariaDB from C++ (100 pts)
+11. Group Project - Database Driven Web Application - Fitness Tracker (300 pts)
