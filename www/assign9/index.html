@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noimageindex, nofollow, nosnippet">
+    <title>CSCI 466 - Assignment 9 - Transactions</title>
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <link rel="stylesheet" href="/sql.css" />
+    <style>
+span.relation {
+    font-family:Consolas, "Lucida Console", Monaco, monospace; 
+}
+.question {
+    font-family:'Times New Roman', Times, serif;
+    font-size: larger;
+}
+.answer {
+    font-family:Arial, Helvetica, sans-serif;
+}
+div.fd {
+    font-size:small;
+}
+table.fd {
+    table-layout: auto;
+    max-width: 350px;
+}
+body {
+    max-width: 1180px !important;
+}
+</style>
+</head>
+<body>
+    <h1>CSCI 466 - Assignment 9</h1>
+    <h2>Transactions in MariaDB (75pts)</h2>
+    <h3>Purpose</h3>
+    <p>The purpose of this assignment is to experiment with the behavior of transactions using a MariaDB database.
+        You will need to use more than one MariaDB session for these to work. To do this, just open up two separate
+        putty sessions to turing or hopper and log into MariaDB on each of them. Use the same name for the output
+        file for all of the sessions – <code>\T assign9out.txt</code> – so that the output from all of your sessions ends up in the
+        same file. When <code>znnnnnnn</code> is used, replace it with your own z-id.
+    </p>
+    <h3>Part I - The Power of COMMIT (25pts)</h3>
+    <ol>
+        <li>
+            <p class="question">Start your first MariaDB seesion, issue the following SQL queries:</p>
+            <pre>
+\T assign9out.txt
+<span class="keyword">USE</span> znnnnnnn<span class="punct">;</span>
+<span class="keyword">CREATE TABLE</span> Fall(
+    pk <span class="type">INT</span> <span class="keyword">PRIMARY KEY</span><span class="punct">,</span>
+    data <span class="type">CHAR</span><span class="punct">(</span><span class="number">15</span><span class="punct">));</span>
+<span class="keyword">START TRANSACTION</span><span class="punct">;</span>
+<span class="keyword">INSERT INTO</span> Fall
+    <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">1</span><span class="punct">,</span> <span class="string">'dataA'</span><span class="punct">);</span>
+<span class="keyword">INSERT INTO</span> Fall
+    <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">2</span><span class="punct">,</span> <span class="string">'dataB'</span><span class="punct">);</span>
+<span class="keyword">INSERT INTO</span> Fall
+    <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">3</span><span class="punct">,</span> <span class="string">'dataC'</span><span class="punct">);</span>
+</pre>
+        </li>
+        <li>
+            <p>Start your second MariaDB session, and run the following SQL queries in it.</p>
+            <pre>
+\T assign9out.txt
+<span class="keyword">USE</span> znnnnnnn<span class="punct">;</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Fall<span class="punct">;</span>
+</pre>
+            <p class="question"><strong>Question 1.2)</strong> What is the result of running the SELECT statement. Why?</p>
+            <p class="answer">Answer: Empty set (0.00 sec). There is no errors and no results because the table was created outside of a transaction, but the <code>INSERT</code> statements were part of a transaction that is still in progress (not committed yet).</p>
+        </li>
+        <li>
+            <p class="question"> In that second session, run the following:</p>
+            <pre>
+<span class="keyword">INSERT INTO</span> Fall
+    <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">4</span><span class="punct">,</span> <span class="string">'dataD'</span><span class="punct">);</span>
+<span class="keyword">INSERT INTO</span> Fall
+    <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">5</span><span class="punct">,</span> <span class="string">'dataE'</span><span class="punct">);</span>
+
+</pre>
+        </li>
+        <li>
+            <p class="question">Switching back to the first MariaDB session, issue the following queries:</p>
+            <pre>
+<span class="keyword">COMMIT</span><span class="punct">;</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Fall<span class="punct">;</span>
+\t
+exit<span class="punct">;</span>
+</pre>
+            <p class="question"><strong>Question 1.5)</strong> What is the result of the SELECT statement above?</p>
+            <p class="answer">
+                <pre>
++----+-------+
+| pk | data  |
++----+-------+
+|  1 | dataA |
+|  2 | dataB |
+|  3 | dataC |
+|  4 | dataD |
+|  5 | dataE |
++----+-------+
+5 rows in set (0.00 sec)                  
+</pre>
+            </p>
+        </li>
+    </ol>
+    <h3>Part II -- The Power of ROLLBACK (25pts)</h3>
+    <ol>
+        <li>
+            <p class="question">Start another MariaDB session, issue following MariaDB statements:</p>
+            <pre>
+\T assign9out.txt
+<span class="keyword">USE</span> znnnnnnn<span class="punct">;</span>
+<span class="keyword">START TRANSACTION</span><span class="punct">;</span>
+<span class="keyword">DELETE FROM</span> Fall <span class="keyword">WHERE</span> pk <span class="punct">=</span> <span class="number">3</span><span class="punct">;</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Fall<span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">Then</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> Data <span class="punct">=</span> <span class="string">'changed'</span>
+    <span class="keyword">WHERE</span> pk <span class="punct">=</span> <span class="number">2</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">Then</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> Data <span class="punct">=</span> <span class="string">'changed 2'</span>
+    <span class="keyword">WHERE</span> pk <span class="punct">=</span> <span class="number">4</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">Then</p>
+            <pre>
+<span class="keyword">INSERT INTO</span> Fall <span class="keyword">VALUES</span><span class="punct">(</span><span class="number">6</span><span class="punct">,</span> <span class="string">'dataF'</span><span class="punct">);</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Spring<span class="punct">;</span>
+</pre>
+            <p class="question"><strong>Question 2.4)</strong> What is the result of the SELECT statement, and why?</p>
+            <p class="answer">
+                <pre>
++----+-----------+
+| pk | data      |
++----+-----------+
+|  1 | dataA     |
+|  2 | changed   |
+|  4 | changed 2 |
+|  5 | dataE     |
+|  6 | dataF     |
++----+-----------+
+5 rows in set (0.11 sec)
+</pre>
+                From inside the transaction, we can see the changes we have made so far also in the same transaction. 
+                If I had not corrected the mistake of table “Spring”, there would be an error saying “Spring” does not exist. 
+                If I tried to select the Fall table from another mysql session, the table would not show the changes yet, 
+                since the transaction is not yet completed.
+            </p>
+        </li>
+        <li>
+            <p class="question">Issue the following MariaDB statements:</p>
+            <pre>
+<span class="keyword">ROLLBACK</span><span class="punct">;</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> Fall<span class="punct">;</span>
+</pre>
+            <p class="question"><strong>Question 2.5)</strong> What is the result of the SELECT statement, and why?</p>
+            <pre>
++----+-------+
+| pk | data  |
++----+-------+
+|  1 | dataA |
+|  2 | dataB |
+|  3 | dataC |
+|  4 | dataD |
+|  5 | dataE |
++----+-------+
+5 rows in set (0.00 sec)
+</pre>
+            <p class="answer">The changes made in the previous transaction are rolled back, so the table appears just as it was before the transaction began.</p>
+        </li>
+    </ol>
+    <h3>Part III: Be Aware of Deadlock (25pts)</h3>
+    <p class=question>Using another two sessions of MariaDB, do the following in the order specified:</p>
+    <ol>
+        <li>
+            <p class="question">In session 1,</p>
+            <pre>
+\T assign9out.txt
+<span class="keyword">USE</span> znnnnnnn<span class="punct">;</span>
+<span class="keyword">START TRANSACTION</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">In session 2,</p>
+            <pre>
+\T assign9out.txt
+<span class="keyword">USE</span> znnnnnnn<span class="punct">;</span>
+<span class="keyword">START TRANSACTION</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">In session 1,</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> data <span class="punct">=</span> <span class="string">'data1A'</span>
+    <span class="keyword">WHERE</span> pk<span class="punct">=</span><span class="number">1</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">In session 2,</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> data<span class="punct">=</span> <span class="string">'data2B'</span>
+    <span class="keyword">WHERE</span> pk <span class="punct">=</span><span class="number">2</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">In session 1,</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> data <span class="punct">=</span> <span class="string">'data5E'</span>
+    <span class="keyword">WHERE</span> pk <span class="punct">=</span><span class="number">5</span><span class="punct">;</span>
+</pre>
+        </li>
+        <li>
+            <p class="question">In session 2,</p>
+            <pre>
+<span class="keyword">UPDATE</span> Fall
+    <span class="keyword">SET</span> DAta <span class="punct">=</span> <span class="string">'data12B'</span>
+    <span class="keyword">WHERE</span> pk <span class="punct">=</span><span class="number">1</span><span class="punct">;</span>
+</pre>
+            <p class="question"><strong>Question 3)</strong> What happened here?</p>
+            <p class="answer">The row WHERE pk = 1 is locked because it is being updated as part of a separate transaction, so the second session eventually times out.</p>
+        </li>
+    </ol>
+    <h3>Notes</h3>
+    <p>
+        There may be typos in these statements. If there is a syntax error, fix it. These errors were made to encourage
+        you to pay close attention, and to type the statements in yourself as practice.
+    </p>
+    <h3>What to turn in?</h3>
+    <p>
+        Turn in, via Blackboard, the following:
+        <ul>
+            <li>The output generated by running the commands in both of the sessions.</li>
+            <li>The answers to the questions asked, (1.2, 1.5, 2.4, 2.5, and 3), in a separate text file.</li>
+        </ul>
+    </p>
+</body>
+</html>
