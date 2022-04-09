@@ -1,0 +1,29 @@
+version: "2.4"
+services:
+  web:
+    image: csci466-web
+    build: .
+    ports:
+      - "8002:80"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u$MYSQL_USER", "-p$MYSQL_PASSWORD", "ping", "--silent"]
+      interval: 5s
+      start_period: 10s
+      timeout: 5s
+      retries: 2
+volumes:
+  db:
