@@ -1,7 +1,10 @@
-# CSCI 466 - Databases
-Software development in a representative current database system.
+# CSCI 466 - Databases - Course Work
 
-Assignments:
+**Software development in a representative current database system.**
+
+🌐 View on the web at [csci466.zgjs.app](https://csci466.zgjs.app/)
+
+### Assignments:
 1. ER Diagram - Fitness Tracker (50 pts)
 2. Normalization (50 pts)
 3. ER Diagram to Third Normal Form (100 pts)
