@@ -27,7 +27,7 @@ include '/var/www/php.inc/highlight.inc.php';
             </p>
             <?php
 include '/var/www/php.inc/db.inc.php';
-include '/var/www/php.inc/table_routines.inc.php/';
+include '/var/www/php.inc/table_routines.inc.php';
 // Connect to BabyName database
 $database = 'BabyName';
 $connection = new mysqli($servername, $username, $password, $database);

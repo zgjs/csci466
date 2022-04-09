@@ -130,7 +130,7 @@ body {
 <?php
 // Connect to default database
 include '/var/www/php.inc/db.inc.php';
-include '/var/www/php.inc/table_routines.inc.php/';
+include '/var/www/php.inc/table_routines.inc.php';
 $connection = new mysqli($servername, $username, $password, $dbname);
 if ($connection->connect_error) die("<p class=error>Connection failed" . $connection_connect_error . "</p>");
 ?>
